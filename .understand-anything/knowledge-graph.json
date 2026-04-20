@@ -1,0 +1,186 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-20T00:00:00.000Z",
+  "projectRoot": "/home/basitdev/workspace/env-mcp-server",
+  "nodes": [
+    {
+      "id": "file:src/env_mcp/server.py",
+      "type": "file",
+      "name": "server.py",
+      "filePath": "src/env_mcp/server.py",
+      "layer": "api",
+      "summary": "FastMCP server entry point that registers four MCP tools (read, validate, diff, missing) for managing .env files. Calls into env_tools for actual logic and exposes a main() function for CLI execution.",
+      "language": "python",
+      "concepts": ["async-await"]
+    },
+    {
+      "id": "file:src/env_mcp/tools/env_tools.py",
+      "type": "file",
+      "name": "env_tools.py",
+      "filePath": "src/env_mcp/tools/env_tools.py",
+      "layer": "service",
+      "summary": "Core library for parsing, reading, validating, diffing, and reporting missing keys in .env files. Implements secret masking using regex pattern matching on key names (token, password, api_key, etc.).",
+      "language": "python",
+      "concepts": ["higher-order-functions"]
+    },
+    {
+      "id": "file:src/env_mcp/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "src/env_mcp/__init__.py",
+      "layer": "utility",
+      "summary": "Package initializer for env_mcp module.",
+      "language": "python"
+    },
+    {
+      "id": "file:src/env_mcp/tools/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "src/env_mcp/tools/__init__.py",
+      "layer": "utility",
+      "summary": "Package initializer for env_mcp.tools subpackage.",
+      "language": "python"
+    },
+    {
+      "id": "file:tests/test_env_tools.py",
+      "type": "file",
+      "name": "test_env_tools.py",
+      "filePath": "tests/test_env_tools.py",
+      "layer": "utility",
+      "summary": "Pytest test suite for the env_tools module, verifying read, validate, diff, and missing functions.",
+      "language": "python"
+    },
+    {
+      "id": "file:pyproject.toml",
+      "type": "file",
+      "name": "pyproject.toml",
+      "filePath": "pyproject.toml",
+      "layer": "utility",
+      "summary": "Python project configuration declaring dependencies (fastmcp, python-dotenv) and console entry point for env-mcp-server.",
+      "language": "toml"
+    },
+    {
+      "id": "function:read_env",
+      "type": "function",
+      "name": "read_env",
+      "filePath": "src/env_mcp/tools/env_tools.py",
+      "layer": "service",
+      "summary": "Reads a .env file and returns all key-value pairs as a dict, masking secret-looking keys by default.",
+      "language": "python",
+      "concepts": ["higher-order-functions"]
+    },
+    {
+      "id": "function:validate_env",
+      "type": "function",
+      "name": "validate_env",
+      "filePath": "src/env_mcp/tools/env_tools.py",
+      "layer": "service",
+      "summary": "Compares a .env file against a .env.example, reporting missing, extra, and empty variables.",
+      "language": "python"
+    },
+    {
+      "id": "function:diff_envs",
+      "type": "function",
+      "name": "diff_envs",
+      "filePath": "src/env_mcp/tools/env_tools.py",
+      "layer": "service",
+      "summary": "Compares two .env files and returns keys unique to each and keys with differing values.",
+      "language": "python"
+    },
+    {
+      "id": "function:list_missing",
+      "type": "function",
+      "name": "list_missing",
+      "filePath": "src/env_mcp/tools/env_tools.py",
+      "layer": "service",
+      "summary": "Returns only the list of required variables missing from a .env compared to its .env.example.",
+      "language": "python"
+    },
+    {
+      "id": "function:_parse_env_file",
+      "type": "function",
+      "name": "_parse_env_file",
+      "filePath": "src/env_mcp/tools/env_tools.py",
+      "layer": "utility",
+      "summary": "Internal parser that reads a .env file, strips comments and blank lines, and handles quoted values.",
+      "language": "python"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:server-imports-env_tools",
+      "source": "file:src/env_mcp/server.py",
+      "target": "file:src/env_mcp/tools/env_tools.py",
+      "type": "imports"
+    },
+    {
+      "id": "edge:server-calls-read_env",
+      "source": "file:src/env_mcp/server.py",
+      "target": "function:read_env",
+      "type": "calls"
+    },
+    {
+      "id": "edge:server-calls-validate_env",
+      "source": "file:src/env_mcp/server.py",
+      "target": "function:validate_env",
+      "type": "calls"
+    },
+    {
+      "id": "edge:server-calls-diff_envs",
+      "source": "file:src/env_mcp/server.py",
+      "target": "function:diff_envs",
+      "type": "calls"
+    },
+    {
+      "id": "edge:server-calls-list_missing",
+      "source": "file:src/env_mcp/server.py",
+      "target": "function:list_missing",
+      "type": "calls"
+    },
+    {
+      "id": "edge:read_env-calls-parse",
+      "source": "function:read_env",
+      "target": "function:_parse_env_file",
+      "type": "calls"
+    },
+    {
+      "id": "edge:validate_env-calls-parse",
+      "source": "function:validate_env",
+      "target": "function:_parse_env_file",
+      "type": "calls"
+    },
+    {
+      "id": "edge:diff_envs-calls-parse",
+      "source": "function:diff_envs",
+      "target": "function:_parse_env_file",
+      "type": "calls"
+    },
+    {
+      "id": "edge:tests-uses-env_tools",
+      "source": "file:tests/test_env_tools.py",
+      "target": "file:src/env_mcp/tools/env_tools.py",
+      "type": "uses"
+    }
+  ],
+  "tours": [
+    {
+      "id": "tour:how-env-reading-works",
+      "title": "How .env File Reading Works End-to-End",
+      "steps": [
+        { "nodeId": "file:src/env_mcp/server.py", "reason": "Start at the MCP server — this is where the 'read' tool is registered and exposed to Claude." },
+        { "nodeId": "function:read_env", "reason": "The server calls read_env from env_tools — trace how it reads, parses, and masks secrets." },
+        { "nodeId": "function:_parse_env_file", "reason": "read_env delegates raw parsing here — see how comments and quoted values are handled." }
+      ]
+    },
+    {
+      "id": "tour:env-validation-workflow",
+      "title": "Validating a .env Against .env.example",
+      "steps": [
+        { "nodeId": "file:src/env_mcp/server.py", "reason": "The 'validate' and 'missing' tools are registered here." },
+        { "nodeId": "function:validate_env", "reason": "Core validation logic — compares actual vs expected keys and reports discrepancies." },
+        { "nodeId": "function:list_missing", "reason": "Thin wrapper around validate_env that returns only the missing keys list." },
+        { "nodeId": "file:tests/test_env_tools.py", "reason": "See how the validation behavior is tested with real examples." }
+      ]
+    }
+  ]
+}
